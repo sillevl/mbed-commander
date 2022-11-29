@@ -52,7 +52,7 @@ class HelloWorldCommand : public Commander::Command {
 Next, add the command instances to an `Commander` by using the `addCommand()` method.
 
 ```cpp
-Commander::Commander commander(uart);
+Commander commander;
 commander.addCommand(new HelloWorldCommand("HELLO"));
 ```
 
@@ -63,6 +63,38 @@ while(true) {
     commander.dispatch();
 }
 ```
+
+### input and output
+
+Using the `Commander` constructor, the input and/or output FileHandles are configurable.
+
+* Default `STDIN` and `STDOUT`:
+
+    ```cpp
+    Commander commander;
+    ```
+
+* Custom input and output:
+  
+    ```cpp
+    BufferedSerial serial(USBTX, USBRX);
+    Commander commander(&serial, &serial);
+    ```
+
+* Mixed input and output
+
+    ```cpp
+    BufferedSerial input(USBTX, USBRX);
+    BufferedSerial output(D0, D1);
+    Commander commander(&input, &output);
+    ```
+
+* Custom input, standard output
+
+    ```cpp
+    BufferedSerial input(USBTX, USBRX);
+    Commander commander(&input);
+    ```
 
 ## Example
 
@@ -94,9 +126,11 @@ class HelloWorldCommand : public Commander::Command {
 #include "commander.h"
 #include "HelloWorldCommand.h"
 
+using Commander;
+
 int main() {
     mbed::FileHandle* uart = mbed::mbed_file_handle(STDIN_FILENO);
-    Commander::Commander commander(uart);
+    Commander commander(uart);
 
     commander.addCommand(new HelloWorldCommand("HELLO"));
 
