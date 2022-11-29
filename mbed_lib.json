@@ -1,0 +1,25 @@
+{
+    "name": "commander",
+    "requires": [ "mbed-trace"],
+    "config": {
+        "max-command-size": {
+            "help": "Maximum size in bytes of a command string",
+            "value_min": 8,
+            "value": 16
+        },
+        "uart-buffer-size": {
+            "help": "UART RX Buffer size",
+            "value_min": 8,
+            "value": 128
+        },
+        "default-error-message": {
+            "help": "Default error response message",
+            "value": "\"ERROR\""
+        },
+        "default-success-message": {
+            "help": "Default success response message",
+            "value": "\"OK\""
+        }
+    }
+}
+
