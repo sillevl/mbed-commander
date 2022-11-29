@@ -5,11 +5,18 @@
 
 namespace Commander {
 
+    enum Status { SUCCESS, NOT_FOUND, ERROR, NOT_IMPLEMENTED };
+
+    struct Response {
+        Status status;
+        std::string message;
+    };
+
     class Command {
         public: 
             Command(const char* command);
             Command(Command &command);
-            bool execute(char* command);
+            Response execute(char* command);
 
             virtual std::string get();
             virtual std::string set(std::string argument);

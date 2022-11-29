@@ -13,25 +13,23 @@ namespace Commander {
         strcpy(this->command, command);
     }
 
-    bool Command::execute(char* command) {
+    Response Command::execute(char* command) {
 
         size_t command_size = strlen(this->command);
         if( strncmp(command, this->command, command_size) != 0){
-            return false;   // command starts with wrong characters
+            return { Status::NOT_FOUND, NULL };   // command starts with wrong characters
         }
 
         if( strlen(command) == command_size ) {
             std::string result = get();
             tr_debug("get command found for %s", this->command);
-            printf("%s\n", result.c_str());
-            return true;
+            return { Status::SUCCESS, result };
         }
 
         if( command[command_size] == '!') {
             std::string result = action();
             tr_debug("action command found for %s", this->command);
-            printf("%s\n", result.c_str());
-            return true;
+            return { Status::SUCCESS, result };
         }
         
         if( command[command_size] == '=') {
@@ -40,11 +38,10 @@ namespace Commander {
             std::string result = set(argument);
             tr_debug("set command found for %s", this->command);
             tr_debug("set() argument size: %d", strlen(argument));
-            printf("%s\n", result.c_str());
-            return true;
+            return { Status::SUCCESS, result };
         }
 
-        return false;
+        return { Status::NOT_FOUND, NULL };
     }
 
     std::string Command::get() {

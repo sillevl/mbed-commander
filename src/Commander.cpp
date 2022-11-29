@@ -4,8 +4,9 @@
 #define TRACE_GROUP "COMMANDER"
 namespace Commander {
 
-    Commander::Commander(mbed::FileHandle* uart) {
-        this->uart = uart;
+    Commander::Commander(mbed::FileHandle* inputFileHandle, mbed::FileHandle* outputFileHandle) {
+        this->inputFileHandle = inputFileHandle;
+        this->outputFileHandle = outputFileHandle;
     }
 
     Commander::~Commander() {
@@ -15,9 +16,9 @@ namespace Commander {
     }
 
     void Commander::dispatch() {
-        while(uart->readable()) {
+        while(inputFileHandle->readable()) {
             char received;
-            uart->read(&received, 1);
+            inputFileHandle->read(&received, 1);
             buffer[buffer_index] = received;
             buffer[buffer_index+1] = '\0';
             buffer_index++;
@@ -41,12 +42,18 @@ namespace Commander {
         bool success = false;
 
         for (Command* command : commandList) {
-            success |= command->execute(commandString);
+            Response response = command->execute(commandString);
+            if(response.status != SUCCESS) { continue; }
+                
+            FILE* output = fdopen(outputFileHandle, "r+");
+            fprintf(output, "%s\n", response.message.c_str());
+            break;
         }
 
         if(!success) {
             tr_debug("command did not match any registered commands");
-            printf("%s\n", Command::ERROR_MESSAGE);
+            FILE* output = fdopen(outputFileHandle, "r+");
+            fprintf(output, "%s\n", Command::ERROR_MESSAGE);
         }
     }
 
