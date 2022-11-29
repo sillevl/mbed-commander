@@ -116,3 +116,9 @@ OK
 HELLO
 John Doe
 ```
+
+## Helpers
+
+The command class provides some helpers in order to parse arguments.
+
+* `getArguments(string input, char _separator = ',')`: Returns an vector containing the split parts of a string, separated by a separator character.
