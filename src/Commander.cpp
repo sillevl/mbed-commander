@@ -1,5 +1,7 @@
 #include "Commander.h"
+#include "mbed_trace.h"
 
+#define TRACE_GROUP "COMMANDER"
 namespace Commander {
 
     Commander::Commander(mbed::FileHandle* uart) {
@@ -31,6 +33,7 @@ namespace Commander {
     }
 
     void Commander::addCommand(Command* command) {
+        tr_debug("A command is added to the Commander");
         commandList.push_back(command);
     }
 
@@ -42,6 +45,7 @@ namespace Commander {
         }
 
         if(!success) {
+            tr_debug("command did not match any registered commands");
             printf("%s\n", Command::ERROR_MESSAGE);
         }
     }

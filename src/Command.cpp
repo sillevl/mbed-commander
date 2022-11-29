@@ -1,4 +1,7 @@
 #include "Command.h"
+#include "mbed_trace.h"
+
+#define TRACE_GROUP "COMMANDER"
 
 namespace Commander {
 
@@ -19,20 +22,24 @@ namespace Commander {
 
         if( strlen(command) == command_size ) {
             std::string result = get();
+            tr_debug("get command found for %s", this->command);
             printf("%s\n", result.c_str());
             return true;
         }
 
         if( command[command_size] == '!') {
             std::string result = action();
+            tr_debug("action command found for %s", this->command);
             printf("%s\n", result.c_str());
             return true;
         }
         
         if( command[command_size] == '=') {
-            char argument[100] = { 0 };
+            char argument[MBED_CONF_COMMANDER_MAX_SET_ARGUMENT_SIZE] = { 0 };
             strcpy(argument, command + command_size + 1);
             std::string result = set(argument);
+            tr_debug("set command found for %s", this->command);
+            tr_debug("set() argument size: %d", strlen(argument));
             printf("%s\n", result.c_str());
             return true;
         }
@@ -41,14 +48,17 @@ namespace Commander {
     }
 
     std::string Command::get() {
+        tr_debug("%s.get() is not implemented", this->command);
         return Command::ERROR_MESSAGE;
     }
 
     std::string Command::set(std::string argument) {
+        tr_debug("%s.set() is not implemented", this->command);
         return Command::ERROR_MESSAGE;
     }
 
     std::string Command::action() {
+        tr_debug("%s.action() is not implemented", this->command);
         return Command::ERROR_MESSAGE;
     }
 

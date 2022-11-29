@@ -12,6 +12,10 @@
             "value_min": 8,
             "value": 128
         },
+        "max-set-argument-size": {
+            "help": "Maximum allowed argument size for set commands",
+            "value": 100
+        },
         "default-error-message": {
             "help": "Default error response message",
             "value": "\"ERROR\""
