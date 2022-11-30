@@ -9,6 +9,8 @@ Commander supports tye following types of commands:
 * `set`
 * `action`
 
+You can escape commands using the `escape` key. The command will be ignored and you will be presented with a clear input to start a new command.
+
 ### Get command
 
 Use these commands to get values back. This can be done by sending just the command string.
