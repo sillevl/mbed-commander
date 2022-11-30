@@ -44,7 +44,8 @@ namespace Commander {
         for (Command* command : commandList) {
             Response response = command->execute(commandString);
             if(response.status != SUCCESS) { continue; }
-                
+            
+            success = true;
             FILE* output = fdopen(outputFileHandle, "r+");
             fprintf(output, "%s\n", response.message.c_str());
             break;

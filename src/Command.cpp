@@ -17,7 +17,7 @@ namespace Commander {
 
         size_t command_size = strlen(this->command);
         if( strncmp(command, this->command, command_size) != 0){
-            return { Status::NOT_FOUND, NULL };   // command starts with wrong characters
+            return { Status::NOT_FOUND, "" };   // command starts with wrong characters
         }
 
         if( strlen(command) == command_size ) {
@@ -31,7 +31,7 @@ namespace Commander {
             tr_debug("action command found for %s", this->command);
             return { Status::SUCCESS, result };
         }
-        
+
         if( command[command_size] == '=') {
             char argument[MBED_CONF_COMMANDER_MAX_SET_ARGUMENT_SIZE] = { 0 };
             strcpy(argument, command + command_size + 1);
@@ -41,7 +41,7 @@ namespace Commander {
             return { Status::SUCCESS, result };
         }
 
-        return { Status::NOT_FOUND, NULL };
+        return { Status::NOT_FOUND, "" };
     }
 
     std::string Command::get() {
