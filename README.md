@@ -9,7 +9,7 @@ Commander supports tye following types of commands:
 * `set`
 * `action`
 
-You can escape commands using the `escape` key. The command will be ignored and you will be presented with a clear input to start a new command.
+You can escape commands using `ctrl+x` or `ctrl+c`. The command will be ignored and you will be presented with a clear input to start a new command.
 
 ### Get command
 
