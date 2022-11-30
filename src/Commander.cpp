@@ -4,6 +4,9 @@
 #define TRACE_GROUP "COMMANDER"
 namespace Commander {
 
+    const char Commander::LF_S[] = "\n";
+    const char Commander::CR_S[] = "\r";
+
     Commander::Commander(mbed::FileHandle* inputFileHandle, mbed::FileHandle* outputFileHandle) {
         this->inputFileHandle = inputFileHandle;
         this->outputFileHandle = outputFileHandle;
@@ -19,6 +22,7 @@ namespace Commander {
         while(inputFileHandle->readable()) {
             char received;
             inputFileHandle->read(&received, 1);
+            outputFileHandle->write(&received, 1);
             buffer[buffer_index] = received;
             buffer[buffer_index+1] = '\0';
             buffer_index++;
@@ -26,6 +30,8 @@ namespace Commander {
             if(received != '\r' && received != '\n') {
                 continue;
             }
+
+            outputFileHandle->write(&LF_S, 1);
 
             buffer_index = 0;
             buffer[strcspn(buffer, "\r\n")] = 0; // clear newline or carriage return characters

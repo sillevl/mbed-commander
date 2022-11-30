@@ -24,5 +24,8 @@ namespace Commander {
             mbed::FileHandle* outputFileHandle;
             char buffer[MBED_CONF_COMMANDER_UART_BUFFER_SIZE];
             int buffer_index = 0; 
+
+            static const char LF_S[];
+            static const char CR_S[];
     };
 };
