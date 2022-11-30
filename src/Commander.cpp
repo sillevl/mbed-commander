@@ -9,6 +9,10 @@ namespace Commander {
     static const char ESC = 0x1B;
     static const char DEL = 0x7F;
     static const char BS  = 0x08;
+    static const char ETX = 0x03; //ctrl+c (End of text)
+    static const char ETB = 0x17;  
+    static const char TAB = 0x09;
+    static const char CAN = 0x18; // ctrl+x (cancel)
 
     Commander::Commander(mbed::FileHandle* inputFileHandle, mbed::FileHandle* outputFileHandle) {
         this->inputFileHandle = inputFileHandle;
@@ -25,17 +29,23 @@ namespace Commander {
         while(inputFileHandle->readable()) {
             char received;
             inputFileHandle->read(&received, 1);
-            buffer[buffer_index] = received;
-            buffer[buffer_index+1] = '\0';
-            buffer_index++;
 
-            if(received == ESC) { 
+            if(received == ETX || received == CAN) {   
                 char buf[] = { 'E', 'S', 'C', CR_S, LF_S };
                 outputFileHandle->write(buf, sizeof(buf));
                 break; 
             }
 
             outputFileHandle->write(&received, 1);
+
+            if(received == BS || received == DEL) {
+                buffer[--buffer_index] = '\0';
+                break;
+            }
+
+            buffer[buffer_index] = received;
+            buffer[buffer_index+1] = '\0';
+            buffer_index++;
 
             if(received != '\r' && received != '\n') {
                 continue;
