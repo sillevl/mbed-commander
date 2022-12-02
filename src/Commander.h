@@ -17,6 +17,7 @@ namespace Commander {
             void dispatch();
             void addCommand(Command* command);
             void parse(char* commandString);
+            void on_command(mbed::Callback<void()> cb);
 
         private:
             std::vector<Command*> commandList;
@@ -24,6 +25,6 @@ namespace Commander {
             mbed::FileHandle* outputFileHandle;
             char buffer[MBED_CONF_COMMANDER_UART_BUFFER_SIZE];
             int buffer_index = 0; 
-
+            mbed::Callback<void()> onCommand;
     };
 };

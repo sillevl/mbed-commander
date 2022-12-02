@@ -74,6 +74,7 @@ namespace Commander {
             success = true;
             FILE* output = fdopen(outputFileHandle, "r+");
             fprintf(output, "%s\n", response.message.c_str());
+            if(this->onCommand) { this->onCommand(); };
             break;
         }
 
@@ -84,4 +85,7 @@ namespace Commander {
         }
     }
 
+    void Commander::on_command(mbed::Callback<void()> cb) {
+        this->onCommand = cb;
+    }
 };
